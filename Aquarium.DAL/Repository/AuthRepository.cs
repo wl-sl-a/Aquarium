@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Aquarium.DAL.Entities;
+using Aquarium.Core.Models;
+using Aquarium.Core.Repositories;
 
 namespace Aquarium.DAL.Repository
 {
-    public class AuthRepository : BaseRepository
+    public class AuthRepository : BaseRepository, IAuthRepository
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;

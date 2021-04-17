@@ -9,7 +9,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Aquarium.DAL.Entities;
+using Aquarium.Core.Models;
+using Aquarium.Core;
+using Aquarium.Core.Repositories;
+using Aquarium.DAL.Repository;
+using Aquarium.Core.Services;
+using Aquarium.BLL.Services;
+using Microsoft.AspNetCore.Http;
+using Aquarium.BLL.Services;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Aquarium
 {
@@ -29,7 +38,10 @@ namespace Aquarium
 
             // For Entity Framework
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ConnStr"), b => b.MigrationsAssembly("Aquarium.DAL")));
-
+            services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IFishService, FishService>();
+            services.AddTransient<IAquaService, AquaService>();
             // For Identity
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -57,6 +69,19 @@ namespace Aquarium
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]))
                 };
             });
+            services.AddHttpsRedirection(options =>
+            {
+                options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+                options.HttpsPort = 44340;
+            });
+
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo{ Title = "Aquarium", Version = "v1" });
+            });
+
+            services.AddAutoMapper(typeof(Startup));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,13 +93,20 @@ namespace Aquarium
             }
 
             app.UseRouting();
-
+            app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.RoutePrefix = "";
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My Music V1");
             });
         }
     }

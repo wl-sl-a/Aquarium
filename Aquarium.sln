@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aquarium", "Aquarium\Aquari
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aquarium.DAL", "Aquarium.DAL\Aquarium.DAL.csproj", "{735982F0-4C84-4D57-B939-4D766BC96FFE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aquarium.BLL", "Aquarium.BLL\Aquarium.BLL.csproj", "{1F4B4EE2-A6C5-4684-B82A-4BD554B78E52}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aquarium.BLL", "Aquarium.BLL\Aquarium.BLL.csproj", "{1F4B4EE2-A6C5-4684-B82A-4BD554B78E52}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aquarium.Core", "Aquarium.Core\Aquarium.Core.csproj", "{EF3D6048-95DF-476B-A20A-CAA69C35911D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{1F4B4EE2-A6C5-4684-B82A-4BD554B78E52}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F4B4EE2-A6C5-4684-B82A-4BD554B78E52}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F4B4EE2-A6C5-4684-B82A-4BD554B78E52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF3D6048-95DF-476B-A20A-CAA69C35911D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF3D6048-95DF-476B-A20A-CAA69C35911D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF3D6048-95DF-476B-A20A-CAA69C35911D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF3D6048-95DF-476B-A20A-CAA69C35911D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

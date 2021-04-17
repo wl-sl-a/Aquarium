@@ -12,7 +12,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Aquarium.DAL.Entities;
+using Aquarium.Core.Models;
+using Aquarium.Core.Repositories;
 
 namespace Aquarium.Controllers
 {
@@ -23,25 +24,23 @@ namespace Aquarium.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly IConfiguration _configuration;
-        private readonly AuthRepository authRepository;
-        private readonly ApplicationDbContext dbContext;
-
-        public AuthenticateController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+        private readonly IAuthRepository authRepository;
+        public AuthenticateController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, IAuthRepository authRepository)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
             _configuration = configuration;
-            this.authRepository = new AuthRepository(dbContext, userManager, roleManager);
+            this.authRepository = authRepository;
         }
 
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
-            var user = await authRepository.FindByName(model.Username);
-            if (user != null && await authRepository.CheckPassword(user, model.Password))
+            var user = await this.authRepository.FindByName(model.Username);
+            if (user != null && await this.authRepository.CheckPassword(user, model.Password))
             {
-                var userRoles = await authRepository.GetRoles(user);
+                var userRoles = await this.authRepository.GetRoles(user);
 
                 var authClaims = new List<Claim>
                 {
